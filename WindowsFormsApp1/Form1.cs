@@ -174,20 +174,18 @@ namespace WindowsFormsApp1
             DataSet DS = new DataSet();
             SqlConnection cnn;
             cnn = new SqlConnection(connetionString);
-            using (var form = new Month())
+            using (var form = new Team(connetionString))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    int month = form.month;     //values preserved after close
-                    int year = form.year;
+                    string team = form.team;     //values preserved after close
 
                     try
                     {
                         cnn.Open();
-                        SqlDataAdapter InUseEquipmentAdapter = new SqlDataAdapter("SELECT * FROM InUseEquipment Where MONTH([Date Out]) = @Month AND Year([Date Out]) = @Year", cnn);
-                        InUseEquipmentAdapter.SelectCommand.Parameters.AddWithValue("@Month", month);
-                        InUseEquipmentAdapter.SelectCommand.Parameters.AddWithValue("@Year", year);
+                        SqlDataAdapter InUseEquipmentAdapter = new SqlDataAdapter("SELECT * FROM InUseEquipment JOIN Employees ON Equipment.Employee = Employees.ID Where InUseEquipment.[Date IN] IS NULL AND Employees.Team = @Team", cnn);
+                        InUseEquipmentAdapter.SelectCommand.Parameters.AddWithValue("@Team", team);
                         InUseEquipmentAdapter.Fill(DS, "InUseEquipment");
 
                     }
