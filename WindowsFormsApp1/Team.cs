@@ -23,7 +23,6 @@ namespace WindowsFormsApp1
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            team = listBox1.SelectedValue.ToString();
         }
 
         private void Team_Load(object sender, EventArgs e)
